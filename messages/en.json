@@ -4,6 +4,8 @@
     "add": "Add New Clinic",
     "name": "Clinic Name",
     "workingDays": "Working Days",
-    "time": "Time"
+    "time": "Time",
+    "startTime": "Start Time",
+    "endTime": "End Time"
   }
 }

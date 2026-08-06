@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "Advanced Clinic Management System",
 };
 
+import { Toaster } from "@/components/ui/sonner";
+
 export default async function RootLayout({
   children,
   params
@@ -26,6 +28,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
           {children}
+          <Toaster />
         </NextIntlClientProvider>
       </body>
     </html>
