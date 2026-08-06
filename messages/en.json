@@ -1,0 +1,9 @@
+{
+  "Clinic": {
+    "title": "Clinics Management",
+    "add": "Add New Clinic",
+    "name": "Clinic Name",
+    "workingDays": "Working Days",
+    "time": "Time"
+  }
+}
