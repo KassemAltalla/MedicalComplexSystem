@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Clinic {
+  id          String   @id @default(cuid())
+  name        Json     // { "ar": "عيادة الأسنان", "en": "Dental Clinic" }
+  workingDays String
+  startTime   String
+  endTime     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
