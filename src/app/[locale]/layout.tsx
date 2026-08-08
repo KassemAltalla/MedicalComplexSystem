@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 import { Toaster } from "@/components/ui/sonner";
+import { Navbar } from "@/components/navbar";
 
 export default async function RootLayout({
   children,
@@ -25,9 +26,12 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950`}>
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <Navbar />
+          <main className="flex-1">
+            {children}
+          </main>
           <Toaster />
         </NextIntlClientProvider>
       </body>
