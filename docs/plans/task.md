@@ -1,6 +1,4 @@
-- [x] Explore project context
-- [x] Ask clarifying questions
-- [x] Propose 2-3 approaches
-- [x] Present design sections
-- [x] Write design doc
-- [x] Invoke writing-plans skill
+- [x] Task 1: Internationalization (next-intl) Routing Setup
+- [x] Task 2: Shadcn UI & Design System Setup
+- [x] Task 3: Clinics Listing Page
+- [x] Task 4: Clinic Creation Page
