@@ -3,13 +3,20 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
 import { Button } from '@/components/ui/button';
-import { Activity, Building2, Globe, PlusCircle } from 'lucide-react';
+import { Activity, Building2, CalendarDays, Globe, PlusCircle, Users } from 'lucide-react';
 
 export function Navbar() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-  const t = useTranslations('Clinic');
+  const t = useTranslations('Navigation');
+
+  const navLinks = [
+    { href: '/', label: t('home'), icon: Building2 },
+    { href: '/clinics', label: t('clinics'), icon: Building2 },
+    { href: '/doctors', label: t('doctors'), icon: Users },
+    { href: '/appointments', label: t('appointments'), icon: CalendarDays },
+  ];
 
   const toggleLanguage = (newLocale: 'ar' | 'en') => {
     router.replace(pathname, { locale: newLocale });
@@ -19,7 +26,7 @@ export function Navbar() {
     <header className="glass-nav border-b border-slate-200/80 dark:border-slate-800/80">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Brand Logo & Title */}
-        <Link href="/clinics" className="flex items-center gap-3 group">
+        <Link href="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
             <Activity className="w-5 h-5" />
           </div>
@@ -35,17 +42,22 @@ export function Navbar() {
 
         {/* Quick Navigation Links & Actions */}
         <div className="flex items-center gap-3">
-          <Link href="/clinics">
-            <Button variant="ghost" size="sm" className="gap-2 font-medium">
-              <Building2 className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-              <span>{t('title')}</span>
-            </Button>
-          </Link>
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <Link key={link.href} href={link.href}>
+                <Button variant={pathname.startsWith(link.href) ? 'secondary' : 'ghost'} size="sm" className="gap-2 font-medium">
+                  <Icon className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                  <span>{link.label}</span>
+                </Button>
+              </Link>
+            );
+          })}
 
-          <Link href="/clinics/new">
+          <Link href="/appointments/new">
             <Button size="sm" className="glow-button bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium gap-2">
               <PlusCircle className="w-4 h-4" />
-              <span>{t('add')}</span>
+              <span>{locale === 'ar' ? 'حجز موعد' : 'Book Appointment'}</span>
             </Button>
           </Link>
 

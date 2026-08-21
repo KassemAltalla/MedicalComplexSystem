@@ -10,14 +10,18 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { ArrowLeft, ArrowRight, Building2, Calendar, Clock, Globe2, Loader2, Plus, Sparkles } from 'lucide-react';
 
+import { useLoading } from '@/context/loading-context';
+
 export default function NewClinicPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = use(params);
   const router = useRouter();
   const t = useTranslations('Clinic');
+  const { startLoading, stopLoading } = useLoading();
   const [loading, setLoading] = useState(false);
   
   async function onSubmit(formData: FormData) {
     setLoading(true);
+    startLoading(locale === 'ar' ? 'جاري إضافة العيادة جديدة...' : 'Adding clinic...');
     const data = {
       name: {
         en: formData.get('nameEn') as string,
@@ -38,12 +42,14 @@ export default function NewClinicPage({ params }: { params: Promise<{ locale: st
         );
         router.push(`/clinics`);
       } else {
+        stopLoading();
         toast.error(
           locale === 'ar' ? "حدث خطأ أثناء إضافة العيادة" : "Failed to create clinic"
         );
       }
     } catch (err) {
       setLoading(false);
+      stopLoading();
       toast.error(
         locale === 'ar' ? "حدث خطأ بالاتصال بالنظام" : "An error occurred"
       );
@@ -68,7 +74,7 @@ export default function NewClinicPage({ params }: { params: Promise<{ locale: st
 
         {/* Card Header */}
         <div className="flex items-center gap-4 mb-8 pb-6 border-b border-slate-200/70 dark:border-slate-800">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 text-white flex items-center justify-center shadow-lg shadow-cyan-500/20">
+          <div className="w-12 h-12 rounded-xl bg-linear-to-tr from-cyan-600 to-blue-600 text-white flex items-center justify-center shadow-lg shadow-cyan-500/20">
             <Building2 className="w-6 h-6" />
           </div>
           <div>
@@ -185,7 +191,7 @@ export default function NewClinicPage({ params }: { params: Promise<{ locale: st
             <Button 
               type="submit" 
               disabled={loading} 
-              className="glow-button bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-xl h-11 px-8 min-w-[140px]"
+              className="glow-button bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-xl h-11 px-8 min-w-35"
             >
               {loading ? (
                 <span className="flex items-center gap-2">

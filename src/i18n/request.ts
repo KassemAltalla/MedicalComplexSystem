@@ -8,6 +8,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
   }
   return {
     locale,
+    // Reload messages dynamically
     messages: (await import(`../../messages/${locale}.json`)).default
   };
 });

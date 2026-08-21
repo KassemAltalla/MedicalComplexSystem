@@ -12,8 +12,10 @@ export const metadata: Metadata = {
   description: "Advanced Clinic Management System",
 };
 
+import { Suspense } from 'react';
 import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/navbar";
+import { LoadingProvider } from "@/context/loading-context";
 
 export default async function RootLayout({
   children,
@@ -28,11 +30,15 @@ export default async function RootLayout({
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950`}>
         <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Toaster />
+          <Suspense fallback={null}>
+            <LoadingProvider>
+              <Navbar />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Toaster />
+            </LoadingProvider>
+          </Suspense>
         </NextIntlClientProvider>
       </body>
     </html>

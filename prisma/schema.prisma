@@ -3,16 +3,68 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Clinic {
-  id          String   @id @default(cuid())
-  name        Json     // { "ar": "عيادة الأسنان", "en": "Dental Clinic" }
+  id          String        @id @default(cuid())
+  name        Json          // { "ar": "عيادة الأسنان", "en": "Dental Clinic" }
   workingDays String
   startTime   String
   endTime     String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  doctors     Doctor[]
+  appointments Appointment[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Doctor {
+  id             String        @id @default(cuid())
+  name           Json          // { "ar": "أحمد", "en": "Ahmed" }
+  specialization String
+  licenseNumber  String
+  phoneNumber    String
+  email          String
+  workingDays    String
+  startTime      String
+  endTime        String
+  clinicId       String
+  clinic         Clinic        @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  appointments   Appointment[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Patient {
+  id             String        @id @default(cuid())
+  name           String
+  nationalId     String        // الرقم الوطني/الهوية
+  dateOfBirth    DateTime
+  phoneNumber    String
+  bloodType      String
+  medicalNotes   String?       // ملاحظات طبية أو حساسية
+  appointments   Appointment[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Appointment {
+  id              String   @id @default(cuid())
+  date            DateTime // تاريخ الحجز
+  time            String   // وقت الحجز
+  status          String   @default("PENDING") // PENDING, CONFIRMED, COMPLETED, CANCELLED
+  
+  patientId       String
+  patient         Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  
+  doctorId        String
+  doctor          Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  
+  clinicId        String
+  clinic          Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
